@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-a-Sketch</title>
+    <style>
+        #main-container{
+            display: flex;
+            flex-wrap: wrap;
+            
+        }
+
+        #main-container > div{
+            margin: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <p>
+        <button id="show-dialog">Set Grid Size</button>
+    </p>
+    <div id="main-container">
+
+    </div>
+    <dialog id="modal">
+        <label>Input grid cell amount (max 100)
+            <input id="inputSize" type="number" max="100" size="3" placeholder="16">
+        </label>
+        <button id="js-close">Set</button>
+    </dialog>
+    <script>
+        /*Modal/Dialog to input grid size*/
+        const showBtn = document.querySelector("#show-dialog")
+        const dialog = document.querySelector("#modal")
+        const closeBtn = document.querySelector("#js-close")
+        
+        
+        showBtn.addEventListener("click", () => {
+            dialog.showModal();
+        });
+
+        closeBtn.addEventListener("click",() =>{
+            dialog.close()
+            let gridSize = document.querySelector("#inputSize").value * 1
+            createGrid((gridSize)) 
+        })
+        
+
+
+        /*Grid Creation*/
+        const container = document.querySelector("#main-container")
+
+        function createGrid(size){
+            container.innerHTML = ""
+            let side = size * size
+            for (let i=1; i < (side); i++){
+            container.innerHTML += "<div class='pixel-"+i+"'>X</div>"
+        }}
+        
+        createGrid(16)
+        
+
+    </script>
+</body>
+</html>
