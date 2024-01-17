@@ -5,28 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Etch-a-Sketch</title>
     <style>
+        
+        body{
+            background-color: #0f0f0f;
+        }
+        
+        #outerBox{
+            display: flex;
+            flex: 0 1 0;
+            justify-content: center;
+            margin-top: 40px;
+        }
         #main-container{
             display: flex;
             flex-wrap: wrap;
+            flex: 1 1 auto;
+            align-content: center;
+            justify-content: space-evenly;
             
+            height: 960px;
+            width: 960px;
+            border: 30px solid #0f0f0f;
+            background-color: #0f0f0f;
+            text-align: center;
+            
+            flex-grow: 0;
         }
 
         #main-container > div{
-            margin: 10px;
+            color: #ffff;
+            border: 0.5px solid #ffff;
+            box-sizing: border-box;
         }
+        /*
+        #main-container > div:hover{
+            background-color: red;
+        }
+        */
+        
+        .buttons-container{
+            justify-content: center;
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+        }
+
+        .draw{
+            color: #ffff;
+            border: 0.5px solid #ffff;
+            box-sizing: border-box;
+            background-color: floralwhite;
+        }
+
 
     </style>
 </head>
 <body>
-    <p>
+    <div class="buttons-container">
         <button id="show-dialog">Set Grid Size</button>
-    </p>
-    <div id="main-container">
+    </div>
+    <div id="outerBox">
+        <div id="main-container">
 
+        </div>
     </div>
     <dialog id="modal">
         <label>Input grid cell amount (max 100)
-            <input id="inputSize" type="number" max="100" size="3" placeholder="16">
+            <input id="inputSize" type="number" max="100" min="2" size="3" placeholder="16">
         </label>
         <button id="js-close">Set</button>
     </dialog>
@@ -47,18 +92,28 @@
             createGrid((gridSize)) 
         })
         
-
-
         /*Grid Creation*/
         const container = document.querySelector("#main-container")
 
         function createGrid(size){
             container.innerHTML = ""
             let side = size * size
-            for (let i=1; i < (side); i++){
-            container.innerHTML += "<div class='pixel-"+i+"'>X</div>"
-        }}
+            for (let i=1; i < (side+1); i++){
+            container.innerHTML += "<div class='pixel-"+ i+ "'>" +  "</div>"
+        }
+            let containerSize = container.offsetWidth
+            let pixelWidth = (960 / size) 
+            const pixels = document.querySelectorAll("#main-container > div")
+            pixels.forEach((pixel) => {
+                pixel.style.width = pixelWidth +"px";
+                pixel.style.height = pixelWidth +"px";
+                pixel.addEventListener('mouseover', function(){
+                    pixel.classList.toggle('draw')
+                })    
+            })
+            }
         
+            
         createGrid(16)
         
 
