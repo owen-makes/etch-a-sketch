@@ -9,14 +9,15 @@
         body{
             background-color: #0f0f0f;
             min-height: 100vh;
-            
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
         }
         
         #outerBox{
             display: flex;
             flex: 0 1 0;
             justify-content: center;
-            margin-top: 40px;
+            margin-top: 10px;
         }
         #main-container{
             display: flex;
@@ -39,17 +40,14 @@
             border: 0.5px solid #ffff;
             box-sizing: border-box;
         }
-        /*
-        #main-container > div:hover{
-            background-color: red;
-        }
-        */
         
         .buttons-container{
             justify-content: center;
             display: flex;
             flex: 0 0 auto;
             align-items: center;
+            gap: 20px;
+            padding-top: 30px;
         }
         
         .draw{
@@ -62,6 +60,30 @@
             border: 0.5px solid #ffff;
             box-sizing: border-box;
             background-color: #0f0f0f;
+        }
+
+        button{
+            background-color: #0f0f0f; 
+            color: #fff; 
+            padding: 10px 20px;
+            border: none;
+            border-radius: 1px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Hover effect for buttons */
+        button:hover {
+            background-color: gainsboro;
+            color:#0f0f0f
+        }
+
+        #footer{
+            font-size: 14px;
+            text-align: right;
         }
         
     </style>
@@ -82,6 +104,7 @@
         </label>
         <button id="js-close">Set</button>
     </dialog>
+    <div id="footer">owen-makes | 2024</div>
     <script>
         /*-------Modal/Dialog to input grid size------*/
         const showBtn = document.querySelector("#show-dialog")
@@ -153,9 +176,9 @@
             const clearGrid = document.querySelector("#clearBoxes")
             
             clearGrid.addEventListener('click', function(){
-                const pixels = document.querySelectorAll('[class^="pixel-"]')
+                const pixels = document.querySelectorAll('[class~="draw"]')
                 pixels.forEach((pixel) => {
-                    pixel.style.backgroundColor = '#0f0f0f'
+                    pixel.classList.remove('draw')
                 })
             })        
             
