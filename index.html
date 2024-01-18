@@ -8,6 +8,8 @@
         
         body{
             background-color: #0f0f0f;
+            min-height: 100vh;
+            
         }
         
         #outerBox{
@@ -31,7 +33,7 @@
             
             flex-grow: 0;
         }
-
+        
         #main-container > div{
             color: #ffff;
             border: 0.5px solid #ffff;
@@ -49,24 +51,29 @@
             flex: 0 0 auto;
             align-items: center;
         }
-
+        
         .draw{
             color: #ffff;
             border: 0.5px solid #ffff;
             box-sizing: border-box;
             background-color: floralwhite;
         }
-
-
+        .delete{
+            border: 0.5px solid #ffff;
+            box-sizing: border-box;
+            background-color: #0f0f0f;
+        }
+        
     </style>
 </head>
 <body>
     <div class="buttons-container">
         <button id="show-dialog">Set Grid Size</button>
+        <button id="clearBoxes">Clean</button>
     </div>
     <div id="outerBox">
         <div id="main-container">
-
+            
         </div>
     </div>
     <dialog id="modal">
@@ -76,47 +83,85 @@
         <button id="js-close">Set</button>
     </dialog>
     <script>
-        /*Modal/Dialog to input grid size*/
+        /*-------Modal/Dialog to input grid size------*/
         const showBtn = document.querySelector("#show-dialog")
         const dialog = document.querySelector("#modal")
         const closeBtn = document.querySelector("#js-close")
         
-        
         showBtn.addEventListener("click", () => {
             dialog.showModal();
         });
-
+        
         closeBtn.addEventListener("click",() =>{
             dialog.close()
             let gridSize = document.querySelector("#inputSize").value * 1
-            createGrid((gridSize)) 
-        })
-        
-        /*Grid Creation*/
-        const container = document.querySelector("#main-container")
-
-        function createGrid(size){
-            container.innerHTML = ""
-            let side = size * size
-            for (let i=1; i < (side+1); i++){
-            container.innerHTML += "<div class='pixel-"+ i+ "'>" +  "</div>"
-        }
-            let containerSize = container.offsetWidth
-            let pixelWidth = (960 / size) 
-            const pixels = document.querySelectorAll("#main-container > div")
-            pixels.forEach((pixel) => {
-                pixel.style.width = pixelWidth +"px";
-                pixel.style.height = pixelWidth +"px";
-                pixel.addEventListener('mouseover', function(){
-                    pixel.classList.toggle('draw')
-                })    
+            if (gridSize > 1 && gridSize < 100){
+                createGrid((gridSize)) } else if (gridSize < 0 && gridSize > -100){
+                    createGrid((gridSize * -1))
+                } else {
+                    alert("Error: number must be between 0 an 100")
+                }
             })
-            }
-        
             
-        createGrid(16)
-        
-
-    </script>
-</body>
-</html>
+            /*------Adjust Pixel Size----------*/    
+            
+            function adjustPixelSize(size){
+                
+                let containerWidth = 960
+                let containerHeight = containerWidth
+                let pixelWidth = (containerWidth / size)
+                let pixelHeight = (containerHeight / size ) 
+                const pixels = document.querySelectorAll("#main-container > div")    
+                
+                pixels.forEach((pixel) => {
+                    pixel.style.width = pixelWidth +"px";
+                    pixel.style.height = pixelHeight +"px";
+                })
+            }
+            
+            /*----Draw Functionality-----*/   
+            
+            function addDrawEventListeners(){
+                const pixels = document.querySelectorAll('[class^="pixel-"]')
+                
+                pixels.forEach((pixel) => {
+                    pixel.addEventListener('mouseenter', function(){
+                        pixel.classList.add('draw')
+                    })
+                })
+            }
+            
+            /*-------Grid Creation-----------*/
+            
+            const container = document.querySelector("#main-container")
+            
+            
+            function createGrid(size){
+                container.innerHTML = ""
+                let side = size * size
+                for (let i=1; i < (side + 1); i++){
+                    container.innerHTML += "<div class='pixel-"+ i+ "'>" +  "</div>"
+                }
+                
+                adjustPixelSize(size)
+                addDrawEventListeners()
+                
+            }
+            
+            /*---------Clear Grid--------------*/
+            
+            const clearGrid = document.querySelector("#clearBoxes")
+            
+            clearGrid.addEventListener('click', function(){
+                const pixels = document.querySelectorAll('[class^="pixel-"]')
+                pixels.forEach((pixel) => {
+                    pixel.style.backgroundColor = '#0f0f0f'
+                })
+            })        
+            
+            createGrid(16)
+            
+            
+        </script>
+    </body>
+    </html>
